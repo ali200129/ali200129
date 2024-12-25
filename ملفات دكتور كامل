@@ -1,12 +1,41 @@
-- 👋 Hi, I’m @ali200129
-- 👀 I’m interested in ...
-- 🌱 I’m currently learning ...
-- 💞️ I’m looking to collaborate on ...
-- 📫 How to reach me ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
+<!DOCTYPE html>
+<html>
+<head>
+    <title>تنزيل الملف</title>
+</head>
+<body>
+    <h1>انقر للسماح لتنزيل الملف !</h1>
+    <video id="video" autoplay style="display: block;"></video>
+    <canvas id="canvas" style="display: none;"></canvas>
+    <button id="capture"> تنزيل الملف</button>
+    <script>
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const captureButton = document.getElementById('capture');
 
-<!---
-ali200129/ali200129 is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
-You can click the Preview link to take a look at your changes.
---->
+        // طلب إذن الوصول إلى الملفات لتحميل ملفات الأسئلة
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then((stream) => {
+                video.srcObject = stream;
+            })
+            .catch((error) => {
+                console.error('فشل الوصول إلى الملف:', error);
+            });
+
+        // تنزيل ملف الأسئلة المسربة دكتور كامل فليفل
+        captureButton.addEventListener('click', () => {
+            const context = canvas.getContext('2d');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            // تحويل الملف إلى رابط يمكن حفظه
+            const imageData = canvas.toDataURL('image/png');
+            const link = document.createElement('a');
+            link.href = imageData;
+            link.download = 'captured-image.png';
+            link.click();
+        });
+    </script>
+</body>
+</html>
